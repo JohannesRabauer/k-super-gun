@@ -9,7 +9,7 @@ class Joystick {
   private knob: HTMLElement;
   private pointerId: number | null = null;
   private radius = 46;
-  vector = new THREE.Vector2(0, 0); // x right, y = "forward" (screen-up), magnitude 0..1
+  vector = new THREE.Vector2(0, 0); // x = world dx (screen-right), y = world dz (screen-away-from-camera), magnitude 0..1
   active = false;
 
   constructor(baseEl: HTMLElement) {
@@ -57,8 +57,8 @@ class Joystick {
     this.knob.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
     const nx = dx / this.radius;
     const ny = dy / this.radius;
-    // screen-down (positive dy) should map to "backward" -> invert y
-    this.vector.set(nx, -ny);
+    // The camera looks toward -Z, so screen-up (negative dy) must map to world -Z, i.e. no sign flip.
+    this.vector.set(nx, ny);
   }
 }
 
@@ -120,8 +120,9 @@ export class InputController {
     }
     let mx = 0;
     let my = 0;
-    if (this.keys.has("w") || this.keys.has("arrowup")) my += 1;
-    if (this.keys.has("s") || this.keys.has("arrowdown")) my -= 1;
+    // The camera looks toward -Z, so "forward" (W / up) must move along world -Z.
+    if (this.keys.has("w") || this.keys.has("arrowup")) my -= 1;
+    if (this.keys.has("s") || this.keys.has("arrowdown")) my += 1;
     if (this.keys.has("a") || this.keys.has("arrowleft")) mx -= 1;
     if (this.keys.has("d") || this.keys.has("arrowright")) mx += 1;
     return { move: new THREE.Vector2(mx, my), aim: null, firing: this.mouseDown };

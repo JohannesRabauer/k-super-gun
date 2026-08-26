@@ -245,12 +245,17 @@ export class Game {
         }
       }
     }
-    // cleanup dead enemies from scene after a short delay handled inline (immediate removal is fine visually)
+    // Dead enemies skip enemy.update() above, so their hitFlash timer is decayed here instead
+    // (otherwise it would freeze at whatever value the killing blow left it at, and the corpse
+    // would never be cleaned up / the wave would never be considered cleared).
     for (let i = this.enemies.length - 1; i >= 0; i--) {
       const e = this.enemies[i];
-      if (!e.alive && e.hitFlash <= 0) {
-        this.scene.remove(e.rig.root);
-        this.enemies.splice(i, 1);
+      if (!e.alive) {
+        e.hitFlash = Math.max(0, e.hitFlash - dt);
+        if (e.hitFlash <= 0) {
+          this.scene.remove(e.rig.root);
+          this.enemies.splice(i, 1);
+        }
       }
     }
   }
