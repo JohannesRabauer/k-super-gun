@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0e14" />
+    <title>Super Gun</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔫</text></svg>" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene"></canvas>
+
+      <!-- ===== Start / Character Select ===== -->
+      <div id="screen-select" class="screen">
+        <h1 class="logo">SUPER <span>GUN</span></h1>
+        <p class="subtitle">Wähle deinen Kämpfer</p>
+        <div id="character-grid" class="character-grid"></div>
+        <div class="save-info" id="save-info"></div>
+        <button id="btn-start" class="btn btn-primary" disabled>Kampf beginnen</button>
+        <button id="btn-reset" class="btn btn-ghost">Spielstand zurücksetzen</button>
+      </div>
+
+      <!-- ===== Area Select ===== -->
+      <div id="screen-areas" class="screen hidden">
+        <h2 class="logo small">BEREICH WÄHLEN</h2>
+        <div id="area-grid" class="area-grid"></div>
+        <button id="btn-back-to-select" class="btn btn-ghost">Zurück zur Charakterauswahl</button>
+      </div>
+
+      <!-- ===== HUD (in-game) ===== -->
+      <div id="hud" class="hidden">
+        <div class="hud-top">
+          <div class="hud-panel">
+            <div class="hud-char-icon" id="hud-char-icon"></div>
+            <div class="hud-bars">
+              <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hp-fill"></div><span class="bar-label" id="hp-label">100/100</span></div>
+              <div class="bar xp-bar"><div class="bar-fill xp-fill" id="xp-fill"></div><span class="bar-label" id="xp-label">LVL 1</span></div>
+            </div>
+          </div>
+          <div class="hud-area-info">
+            <div id="hud-area-name">Bereich 1</div>
+            <div id="hud-wave-info">Gegner: 0</div>
+          </div>
+          <button id="btn-pause" class="btn btn-icon" aria-label="Pause">⏸</button>
+        </div>
+
+        <div id="levelup-toast" class="levelup-toast hidden">LEVEL UP! <span id="levelup-num"></span></div>
+        <div id="unlock-toast" class="unlock-toast hidden"></div>
+
+        <!-- Mobile controls -->
+        <div id="joystick-move" class="joystick joystick-blue">
+          <div class="joystick-base"><div class="joystick-knob"></div></div>
+        </div>
+        <div id="joystick-aim" class="joystick joystick-red">
+          <div class="joystick-base"><div class="joystick-knob"></div></div>
+        </div>
+      </div>
+
+      <!-- ===== Pause / Death overlay ===== -->
+      <div id="screen-pause" class="screen hidden overlay-screen">
+        <h2 class="logo small">PAUSE</h2>
+        <button id="btn-resume" class="btn btn-primary">Weiter</button>
+        <button id="btn-quit" class="btn btn-ghost">Zur Charakterauswahl</button>
+      </div>
+
+      <div id="screen-death" class="screen hidden overlay-screen">
+        <h2 class="logo small">BESIEGT</h2>
+        <p id="death-info" class="subtitle"></p>
+        <button id="btn-respawn" class="btn btn-primary">Erneut versuchen</button>
+        <button id="btn-death-quit" class="btn btn-ghost">Zur Charakterauswahl</button>
+      </div>
+
+      <div id="orientation-hint" class="orientation-hint hidden">
+        📱 Drehe dein Gerät für das beste Spielerlebnis
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
